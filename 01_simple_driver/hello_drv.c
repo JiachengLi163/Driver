@@ -1,26 +1,27 @@
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/fs.h>
-
+#include <linux/uaccess.h>
 
 static int major = 0;
+static int ker_val = 123;
 
 static ssize_t hello_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
 {
 //	int err;
 	printk("%s %s line=%d\n", __FILE__, __func__, __LINE__);
-//	err = copy_to_user(buf, kernel_buf, MIN(1024,size));
+	copy_to_user(buf, &ker_val, 4);
 //	return MIN(1024, size);
-	return 1;
+	return 4;
 }
 
 static ssize_t hello_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
 {
 //	int err;
 	printk("%s %s line=%d\n", __FILE__, __func__, __LINE__);
-//	err = copy_from_user(kernel_buf, buf, MIN(1024,size));
+	copy_from_user(&ker_val, buf, 4);
 //	return MIN(1024, size);
-	return 1;
+	return 4;
 }
 
 static struct file_operations hello_fops = {
