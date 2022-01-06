@@ -2,9 +2,11 @@
 #include <linux/init.h>
 #include <linux/fs.h>
 #include <linux/uaccess.h>
+#include <linux/device.h>
 
 static int major = 0;
 static int ker_val = 123;
+static struct class *class_for_hello;
 
 static ssize_t hello_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
 {
@@ -34,6 +36,8 @@ int hello_init(void)
 {
 	printk("hello drv init \n");
 	major = register_chrdev(0, "hello_drv", &hello_fops); //注册一个字符设备
+	class_for_hello = class_create(THIS_MODULE,"hello_class"); /*创建类*/
+	device_create(class_for_hello, NULL, MKDEV(major, 0), NULL, "myhello"); /*dev/myhello被创建*/  /*创建设备*/
 	return 0;
 }
 module_init(hello_init);
@@ -41,7 +45,10 @@ module_init(hello_init);
 void hello_exit(void)
 {
 	printk("hello drv exit \n");
+	device_destroy(class_for_hello, MKDEV(major, 0)); /*dev/myhello被创建*/
+	class_destroy(class_for_hello);
 	unregister_chrdev(major, "hello_drv");
+
 }
 module_exit(hello_exit);
 
