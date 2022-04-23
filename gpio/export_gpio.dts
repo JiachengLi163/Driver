@@ -1,0 +1,35 @@
+
+/ {
+
+    gpio_function {
+        status = "okay";
+        compatible = "export,gpio-function";
+        index_offset = <2>;
+        export-name = "gpio-pin";
+		export-gpios =  <&gpio3 RK_PA7 GPIO_ACTIVE_HIGH>,// DIO_4 pin3
+				<&gpio3 RK_PC3 GPIO_ACTIVE_HIGH>,// DIO_8 pin4
+				<&gpio3 RK_PA6 GPIO_ACTIVE_HIGH>,// DIO_3 pin5
+				<&gpio3 RK_PC2 GPIO_ACTIVE_HIGH>,// DIO_7 pin6
+				<&gpio3 RK_PA5 GPIO_ACTIVE_HIGH>,// DIO_2 pin7
+				<&gpio3 RK_PC1 GPIO_ACTIVE_HIGH>,// DIO_6 pin8
+				<&gpio3 RK_PA4 GPIO_ACTIVE_HIGH>,// DIO_1 pin9
+				<&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;// DIO_5 pin10
+    };
+
+};
+
+&pinctrl {
+    gpio {
+		dio_pins: dio-pins {
+			rockchip,pins =
+				<3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>,// DIO_1 pin9
+				<3 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>,// DIO_2 pin7
+				<3 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>,// DIO_3 pin5
+                <3 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none>,// DIO_4 pin3
+				<3 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>,// DIO_5 pin10
+				<3 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>,// DIO_6 pin8
+				<3 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none>,// DIO_7 pin6
+				<3 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none>;// DIO_8 pin4
+		};
+	};
+};
